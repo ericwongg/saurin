@@ -5,9 +5,16 @@ app = Flask(__name__)
 
 login = False
 
-@app.route("/")
+@app.route("/", method=["GET", "POST"])
 def main():
-    render_template("main.html")
+    return render_template("main.html")
+    button = request.args.get("b",None)
+    if button == login:
+        login()
+    elif button == regist:
+        register()
+    else:
+        return render_template("main.html")
 
 @app.route("/login", method=["GET","POST"])
 def login():
@@ -15,8 +22,7 @@ def login():
     if request.method == 'POST':
         user_id = request.args.get("uname",None)
         password = request.args.get("pass",None)
-        button = request.args.get("b",None)
-        if button
+        
 
 @app.route("/user")
 #private pages

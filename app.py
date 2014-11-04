@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, session
-import pymongo
+import data
 
 app = Flask(__name__)
 app.session_interface = MongoSessionInterface(db='saurin')
@@ -22,16 +22,12 @@ def login():
     password = request.args.get("pass",None)
     if request.method == 'POST':
         login = True
-        #check if matches database
-        #if separate.validate(user_id,password):
-        #user()
-        #else:
-        #flash("Error: Username or Password not found")
-        #return render_template("login.html")
-        user()
-    else:
-        flash("Invalid Username or Password!")
-        return render_template("login.html")
+        #check login, send to private page if successful
+        if data.check(user_id, password):
+            private1()
+        else:
+            flash("Invalid Username or Password!")
+            return render_template("login.html")
 
 @app.route("/logout", method=["GET","POST"])
 def logout():
@@ -57,32 +53,36 @@ def register():
         #flash("Sorry, the username is already taken")
         #return redirect("/register")
         #put new data into database
-        flash("Successfully registered!")
-        return render_template("login.html")
+        if data.addNew(user_id, password):
+            flash("Successfully registered!")
+            return render_template("login.html")
+        else:
+            flash("Sorry, the username is already taken.")
+            return redirect("/register")
     else:
         return redirect("/register")
 
 @app.route("/user1", method=["GET","POST"]))
 #private pages
-def user1():
+def private1():
     if (login == False):
         button = request.args.get("b",None)
         if button == 'next':
             user2()
         else:
-            return render_template("user1.html")
+            return render_template("private1.html")
     else:
         return redirect("/main")
     
 @app.route("/user2", method=["GET","POST"]))
 #private pages
-def user2():
+def private2():
     if (login == False):
         button = request.args.get("b",None)
         if button == 'next':
             user1()
         else:
-            return render_template("user2.html")
+            return render_template("private2.html")
     else:
         return redirect("/main")
 

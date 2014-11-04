@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash, session
 import pymongo
 
 app = Flask(__name__)
+app.session_interface = MongoSessionInterface(db='saurin')
 
 login = False
 
@@ -22,6 +23,11 @@ def login():
     if request.method == 'POST':
         login = True
         #check if matches database
+        #if separate.validate(user_id,password):
+        #user()
+        #else:
+        #flash("Error: Username or Password not found")
+        #return render_template("login.html")
         user()
     else:
         flash("Invalid Username or Password!")
@@ -32,6 +38,7 @@ def logout():
     button = request.args.get("b",None)
     login = False
     if button == 'home':
+        flash("Successfully logged out")
         main()
     else:
         return render_template("logout.html")
@@ -41,6 +48,14 @@ def register():
     user_id = request.args.get("uname",None)
     password = request.args.get("pass",None)
     if request.method == "POST":
+        #need to check if username in database already
+        #true if user not in, false otherwise
+        #if separate.checkuser(user_id):
+        #flash("Successfully registered!")
+        #return render_template("login.html")
+        #else:
+        #flash("Sorry, the username is already taken")
+        #return redirect("/register")
         #put new data into database
         flash("Successfully registered!")
         return render_template("login.html")

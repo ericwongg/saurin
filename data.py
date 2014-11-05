@@ -1,13 +1,13 @@
 from pymongo import MongoClient
 import pymongo
 
-client = MongoClient('localhost', 27017)
-db = client['saurin']
+client = MongoClient()
+db = client['saurinnn']
 posts = db['posts']
 
 #add new uname/pw to database
 def addNew(username, password):
-    if db.posts.find_one({"uname": username})==None:
+    if posts.find_one({"uname": username})==None:
         entry = {"uname": username, "pw": password}
         posts.insert(entry)
         return True

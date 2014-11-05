@@ -20,15 +20,25 @@
 <div class="content-wrapper">
   <h2 class="content-head is-center">Register</h2>
 
+  {% with msgs = get_flashed_messages() %}
+  {% if msgs %}
+  {%- for msg in msgs %}
+  <div class="alert alert-info">
+    {{ msg }}
+  </div>
+  {% endfor -%}
+  {% endif %}
+  {% endwith %}
+
     <div class="pure-g">
- 	<form class="pure-form pure-form-stacked">
+ 	<form method="POST" class="pure-form pure-form-stacked">
 	  <fieldset>
 
 	    <label for="user">User Name</label>
-	    <input id="user" type="text" placehold="Username">
+	    <input type="text" name="uname" placehold="Username">
 
 	    <label for="pword">Password</label>
-	    <input id="pword" type="text" placehold="********">
+	    <input type="text" name="pw" placehold="********">
 
 	    <button type="submit" class="pure-button">Login</button>
 	  </fieldset>

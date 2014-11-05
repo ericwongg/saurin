@@ -2,17 +2,16 @@ from flask import Flask, render_template, request, redirect, flash, session
 import pymongo, data
 
 app = Flask(__name__)
-#app.session_interface = MongoSessionInterface(db='saurin')
+app.secret_key = "wow"
 
-login = False
-
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
+@app.route("/main")
 def main():
     button = request.args.get("b",None)
     if button == 'login':
-        login()
+        return login()
     elif button == 'regist':
-        register()
+        return register()
     else:
         return render_template("main.html")
 
@@ -21,17 +20,16 @@ def login():
     if request.method == 'GET':
         return render_template("login.html")
     else:
-        user_id = request.args.get("uname",None)
-        password = request.args.get("pass",None)
-        login = True
+        user_id = request.form["uname"]
+        password = request.form["pw"]
         #check login, send to private page if successful
         if data.check(user_id, password):
-            private1()
+            return private1(user_id)
         else:
             flash("Invalid Username or Password!")
             return redirect("/login")
     
-@app.route("/logout", methods=["GET","POST"])
+@app.route("/logout")
 def logout():
     button = request.args.get("b",None)
     login = False
@@ -46,47 +44,47 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
     else:
-        user_id = request.args.get("uname",None)
-        password = request.args.get("pass",None)
+        user_id = request.form["uname"]
+        password = request.form["pw"]
         #add new data to db, if taken dont do anything
         if data.addNew(user_id, password):
             flash("Successfully registered!")
-            return render_template("login.html")
+            return redirect("/login")
         else:
             flash("Sorry, the username is already taken.")
             return redirect("/register")
 
 
-@app.route("/private1", methods=["GET","POST"])
+@app.route("/private1")
 #private pages
-def private1():
-    if (login == False):
-        button = request.args.get("b",None)
-        if button == 'next':
-            private2()
-        else:
-            return render_template("private1.html")
+def private1(user=None):
+    if user==None:
+        return main()
     else:
-        return redirect("/main")
-    
-@app.route("/private2", methods=["GET","POST"])
-#private pages
-def private2():
-    if (login == False):
         button = request.args.get("b",None)
-        if button == 'next':
-            private1()
+        if button == None:
+            return render_template("private1.html",user=user)
         else:
-            return render_template("private2.html")
-    else:
-        return redirect("/main")
+            return private2(user)
 
-@app.route("/public", methods=["GET","POST"])
+@app.route("/private2")
+#private pages
+def private2(user=None):
+    if user==None:
+        return main()
+    else:
+        button = request.args.get("b",None)
+        if button == None:
+            return render_template("private2.html",user=user)
+        else:
+            return private1(user)
+
+@app.route("/public")
 #public pages
 def public():
     button = request.args.get("b", None)
     if button == 'home':
-        main()
+        return redirect("/main")
     else:
         return render_template("public.html")
 

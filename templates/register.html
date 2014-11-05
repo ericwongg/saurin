@@ -26,6 +26,17 @@
 
   <h2 class="content-head is-center">Login</h2>
 
+  {% with msgs = get_flashed_messages() %}
+  {% if msgs %}
+  {%- for msg in msgs %}
+  <div class="alert alert-info">
+    {{ msg }}
+  </div>
+  {% endfor -%}
+  {% endif %}
+  {% endwith %}
+
+
   <form class="pure-form pure-form-aligned">
    
     <fieldset>
@@ -47,6 +58,6 @@
 
   </form>
 
-
 </body>
+
 </html>

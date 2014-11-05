@@ -1,40 +1,52 @@
 <html>
 
-<head>
-
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="saurin" content="A mongoDB project">
-
-<title> saurin </title>
-
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/gride-responsive-min.css">
+<head>
 
-<link rel="stylesheet" href="/combo/1.17.16?/css/layouts/marketing.css">
+  <title> saurin </title>
 
 </head>
+
 <body>
 
-<div class="content-wrapper">
+  <div class="pure-menu pure-menu-open pure-menu-horizontal">
+    <a href="/" class="pure-menu-heading">saurin</a>
+
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li class="pure-menu-selected"><a href="/">Home</a></li>
+    </ul>
+  
+  </div>
+
   <h2 class="content-head is-center">Login</h2>
 
-    <div class="pure-g">
-	<form class="pure-form pure-form-stacked">
-	  <fieldset>
+  <form class="pure-form pure-form-aligned">
+   
+    <fieldset>
+      <legend>Login to your saurin account</legend>
 
-	    <label for="user">User Name</label>
-	    <input id="user" type="text" placehold="Username">
+      <div class="pure-control-group">
+	<label for="uname">Username</label>
+	<input id="uname" type="text" placeholder="Username">
+      </div>
 
-	    <label for="pword">Password</label>
-	    <input id="pword" type="text" placehold="********">
+      <div class="pure-control-group">
+	<label for="pass">Password</label>
+	<input id="pass" type="text" placeholder="Password">
+      </div>
 
-	    <button type="submit" class="pure-button">Login</button>
-	  </fieldset>
-	</form>
-     </div>
-</div>
+      <button type="submit" class="pure-button pure-button-primary">Submit</button>
+
+   </fieldset>
+
+  </form>
 
 </body>
+
 </html>

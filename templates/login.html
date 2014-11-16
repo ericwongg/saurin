@@ -20,6 +20,7 @@
       <li></li>
       <li></li>
       <li class="pure-menu-selected"><a href="/">Home</a></li>
+      <li class="pure-menu-selected"><a href="/logout">Logout</a></li>
     </ul>
   
   </div>
@@ -36,19 +37,19 @@
   {% endif %}
   {% endwith %}
 
-  <form class="pure-form pure-form-aligned">
+  <form method="POST" class="pure-form pure-form-aligned">
 
     <fieldset>
       <legend>Login to your saurin account</legend>
 
       <div class="pure-control-group">
 	<label for="uname">Username</label>
-	<input id="uname" type="text" placeholder="Username">
+	<input name="uname" type="text" placeholder="Username">
       </div>
 
       <div class="pure-control-group">
-	<label for="pass">Password</label>
-	<input id="pass" type="text" placeholder="Password">
+	<label for="pw">Password</label>
+	<input name="pw" type="text" placeholder="Password">
       </div>
 
       <button type="submit" class="pure-button pure-button-primary">Submit</button>

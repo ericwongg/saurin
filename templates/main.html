@@ -20,6 +20,7 @@
       <li></li>
       <li></li>
       <li class="pure-menu-selected"><a href="/">Home</a></li>
+      <li class="pure-menu-selected"><a href="/logout">Logout</a></li>
     </ul>
   
   </div>
@@ -29,6 +30,15 @@
       <h1 class="splash-head">saurin</h1>
       <p class="splash-subead">
 	just a small little mongoDB project
+      {% with msgs = get_flashed_messages() %}
+      {% if msgs %}
+      {%- for msg in msgs %}
+      <div class="alert alert-info">
+	{{ msg }}
+      </div>
+      {% endfor -%}
+      {% endif %}
+      {% endwith %}
       </p>
       <p>
 	<a href="/login" class="pure-button pure-button-primary">Login!</a>

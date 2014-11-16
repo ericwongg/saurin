@@ -7,6 +7,8 @@ app.secret_key = "wow"
 @app.route("/")
 @app.route("/main")
 def main():
+    if 'user' in session:
+        return private1()
     button = request.args.get("b",None)
     if button == 'login':
         return login()
@@ -17,6 +19,8 @@ def main():
 
 @app.route("/login", methods=["GET","POST"])
 def login():
+    if 'user' in session:
+        return private1()
     if request.method == 'GET':
         return render_template("login.html")
     else:
@@ -24,20 +28,17 @@ def login():
         password = request.form["pw"]
         #check login, send to private page if successful
         if data.check(user_id, password):
-            return private1(user_id)
+            session['user'] = user_id
+            return private1()
         else:
             flash("Invalid Username or Password!")
             return redirect("/login")
     
 @app.route("/logout")
 def logout():
-    button = request.args.get("b",None)
-    login = False
-    if button == 'home':
-        flash("Successfully logged out")
-        return main()
-    else:
-        return render_template("logout.html")
+    session.pop('user')
+    flash("Successfully logged out")
+    return redirect("/")
     
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -49,7 +50,7 @@ def register():
         #add new data to db, if taken dont do anything
         if data.addNew(user_id, password):
             flash("Successfully registered!")
-            return redirect("/login")
+            return redirect("/")
         else:
             flash("Sorry, the username is already taken.")
             return redirect("/register")
@@ -57,27 +58,27 @@ def register():
 
 @app.route("/private1")
 #private pages
-def private1(user=None):
-    if user==None:
+def private1():
+    if 'user' not in session:
         return main()
     else:
         button = request.args.get("b",None)
         if button == None:
-            return render_template("private1.html",user=user)
+            return render_template("private1.html",user=session['user'])
         else:
-            return private2(user)
+            return private2()
 
 @app.route("/private2")
 #private pages
-def private2(user=None):
-    if user==None:
+def private2():
+    if 'user' not in session:
         return main()
     else:
         button = request.args.get("b",None)
         if button == None:
-            return render_template("private2.html",user=user)
+            return render_template("private2.html",user=session['user'])
         else:
-            return private1(user)
+            return private1()
 
 @app.route("/public")
 #public pages

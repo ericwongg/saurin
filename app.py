@@ -1,8 +1,17 @@
 from flask import Flask, render_template, request, redirect, flash, session
+from functools import wraps
 import pymongo, data
 
 app = Flask(__name__)
 app.secret_key = "wow"
+
+def authenticate(func):
+    @wraps(func)
+    def inner(*args):
+        if 'user' not in session:
+            return redirect("/")
+        return func(*args)
+    return inner
 
 @app.route("/")
 @app.route("/main")
@@ -58,27 +67,23 @@ def register():
 
 @app.route("/private1")
 #private pages
+@authenticate
 def private1():
-    if 'user' not in session:
-        return main()
+    button = request.args.get("b",None)
+    if button == None:
+        return render_template("private1.html",user=session['user'])
     else:
-        button = request.args.get("b",None)
-        if button == None:
-            return render_template("private1.html",user=session['user'])
-        else:
-            return private2()
+        return private2()
 
 @app.route("/private2")
 #private pages
+@authenticate
 def private2():
-    if 'user' not in session:
-        return main()
+    button = request.args.get("b",None)
+    if button == None:
+        return render_template("private2.html",user=session['user'])
     else:
-        button = request.args.get("b",None)
-        if button == None:
-            return render_template("private2.html",user=session['user'])
-        else:
-            return private1()
+        return private1()
 
 @app.route("/public")
 #public pages
